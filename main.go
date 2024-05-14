@@ -54,8 +54,13 @@ func main() {
 	if err != nil {
 		log.Fatalf("unable to unmarshal file: %v", err)
 	}
+	dirname, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(dirname)
 
-	mkdirFolderFailed := os.MkdirAll("~/builder/cache", 0777)
+	mkdirFolderFailed := os.MkdirAll(dirname+"/builder/cache", 0777)
 	if mkdirFolderFailed != nil {
 		panic(mkdirFolderFailed)
 	}
@@ -74,12 +79,6 @@ func main() {
 		},
 	}
 
-	dirname, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(dirname)
-
 	// map before_script and script
 	scripts := []string{}
 	scripts = append(scripts, t.Test.BeforeScript...)
@@ -88,8 +87,8 @@ func main() {
 
 	for _, path := range t.Cache["paths"] {
 
-		fmt.Println("making folder: " + "~/builder/cache" + path)
-		mkdirFolderFailed := os.MkdirAll("~/builder/cache"+path, 0777)
+		fmt.Println("making folder: " + dirname + "/builder/cache" + path)
+		mkdirFolderFailed := os.MkdirAll(dirname+"/builder/cache"+path, 0777)
 		if mkdirFolderFailed != nil {
 			panic(mkdirFolderFailed)
 		}
@@ -108,7 +107,7 @@ func main() {
 		Tty:        false,
 	}, &container.HostConfig{
 		Mounts: volumeMounted,
-	}, &network.NetworkingConfig{}, nil, "asdsa")
+	}, &network.NetworkingConfig{}, nil, randomString(10))
 	if err != nil {
 		panic(err)
 	}

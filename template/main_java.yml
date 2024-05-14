@@ -1,0 +1,7 @@
+cache:
+  paths:
+    - /root/.m2
+test: 
+  image: maven:3.6.3-openjdk-11-slim
+  script:
+    - mvn -Dmaven.repo.local=/root/.m2/repository clean install -Dmaven.test.failure.ignore=true

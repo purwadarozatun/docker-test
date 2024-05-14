@@ -1,9 +1,0 @@
-cache:
-  paths:
-    - /node_modules
-test: 
-  image: node:20-slim
-  before_script:
-    - npm ci --legacy-peer-deps
-  script:
-    - npm run test
