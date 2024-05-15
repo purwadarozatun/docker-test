@@ -21,8 +21,12 @@ test:
 and run the command 
 
 ```bash
-go run main.go -c config.yml <path for project>
+go run main.go  config.yml <path for project>
 ```
+
+```bash 
+./builder  config.yml <path for project>
+````
 
 ## How to build it?
 

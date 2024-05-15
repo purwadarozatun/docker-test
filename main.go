@@ -36,8 +36,8 @@ type Config struct {
 
 func main() {
 
-	configYml := os.Args[0]
-	path := os.Args[1]
+	configYml := os.Args[1]
+	path := os.Args[2]
 
 	fmt.Println(configYml)
 	t := Config{}
