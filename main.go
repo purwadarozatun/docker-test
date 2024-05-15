@@ -7,7 +7,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/common-nighthawk/go-figure"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/api/types/network"
 	"github.com/docker/docker/client"
@@ -35,11 +37,16 @@ type Config struct {
 }
 
 func main() {
+	myFigure := figure.NewFigure("GOTEST", "", true)
+	myFigure.Print()
+	fmt.Println("")
+	fmt.Printf("Lightweight Testing Delivery Tools\n\n")
+	fmt.Println("----------------------------------------------")
+	fmt.Println("Usage: builder <config.yml> <path>")
 
 	configYml := os.Args[1]
 	path := os.Args[2]
 
-	fmt.Println(configYml)
 	t := Config{}
 
 	// open config file
@@ -47,7 +54,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("unable to read file: %v", err)
 	}
-	fmt.Println(string(body))
 
 	// unmarshal config file
 	err = yaml.Unmarshal(body, &t)
@@ -58,7 +64,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(dirname)
 
 	mkdirFolderFailed := os.MkdirAll(dirname+"/builder/cache", 0777)
 	if mkdirFolderFailed != nil {
@@ -83,11 +88,9 @@ func main() {
 	scripts := []string{}
 	scripts = append(scripts, t.Test.BeforeScript...)
 	scripts = append(scripts, t.Test.Script...)
-	fmt.Println("current scripts: ", scripts)
 
 	for _, path := range t.Cache["paths"] {
 
-		fmt.Println("making folder: " + dirname + "/builder/cache" + path)
 		mkdirFolderFailed := os.MkdirAll(dirname+"/builder/cache"+path, 0777)
 		if mkdirFolderFailed != nil {
 			panic(mkdirFolderFailed)
@@ -112,6 +115,10 @@ func main() {
 		panic(err)
 	}
 
+	fmt.Println("pulling image: ", t.Test.Image)
+	if _, err := cli.ImagePull(ctx, t.Test.Image, image.PullOptions{}); err != nil {
+		panic(err)
+	}
 	if err := cli.ContainerStart(ctx, resp.ID, container.StartOptions{}); err != nil {
 		panic(err)
 	}
