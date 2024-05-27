@@ -191,6 +191,7 @@ func main() {
 			"-Dsonar.projectKey=" + PROJECT_KEY + "-new",
 			"-Dsonar.javascript.lcov.reportPaths=coverage/lcov.info",
 			"-Dsonar.typescript.tsconfigPaths=tsconfig.sonar.json",
+
 			"-Dsonar.java.binaries=**/*",
 		}
 		resp, err := cli.ContainerCreate(ctx, &container.Config{
