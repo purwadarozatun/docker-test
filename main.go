@@ -143,9 +143,6 @@ func main() {
 		Tty:        false,
 	}, &container.HostConfig{
 		Mounts: volumeMounted,
-		Resources: container.Resources{
-			Memory: 2 * 1024 * 1024 * 1024,
-		},
 	}, &network.NetworkingConfig{}, nil, randomString(10))
 
 	if err != nil {
