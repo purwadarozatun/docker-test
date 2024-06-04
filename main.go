@@ -12,7 +12,6 @@ import (
 	"github.com/alecthomas/kingpin"
 	"github.com/common-nighthawk/go-figure"
 	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/api/types/network"
 	"github.com/docker/docker/client"
@@ -149,10 +148,6 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Println("Starting Job With  Docker Image : ", t.Test.Image)
-	if _, err := cli.ImagePull(ctx, t.Test.Image, image.PullOptions{}); err != nil {
-		panic(err)
-	}
 	if err := cli.ContainerStart(ctx, resp.ID, container.StartOptions{}); err != nil {
 		panic(err)
 	}
@@ -210,10 +205,6 @@ func main() {
 			panic(err)
 		}
 
-		fmt.Println("Starting Job With  Docker Image : ", sonarImage)
-		if _, err := cli.ImagePull(ctx, sonarImage, image.PullOptions{}); err != nil {
-			panic(err)
-		}
 		if err := cli.ContainerStart(ctx, resp.ID, container.StartOptions{}); err != nil {
 			panic(err)
 		}
