@@ -140,9 +140,13 @@ func main() {
 		Cmd:        []string{"/bin/sh", "-c", strings.Join(scripts, " && ")},
 		WorkingDir: "/app",
 		Tty:        false,
-	}, &container.HostConfig{
-		Mounts: volumeMounted,
-	}, &network.NetworkingConfig{}, nil, randomString(10))
+       }, &container.HostConfig{
+	       Mounts: volumeMounted,
+	       Resources: container.Resources{
+		       NanoCPUs: 2_000_000_000, // 2 CPU
+		       Memory:   3 * 1024 * 1024 * 1024, // 3GB
+	       },
+       }, &network.NetworkingConfig{}, nil, randomString(10))
 
 	if err != nil {
 		panic(err)
