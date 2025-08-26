@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"time"
 	"fmt"
 	"log"
 	"os"
@@ -134,7 +135,9 @@ func main() {
 		})
 	}
 
-	ctx := context.Background()
+	// Set timeout maksimal 1,5 jam (90 menit)
+	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Minute)
+	defer cancel()
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
 		Image:      t.Test.Image,
 		Cmd:        []string{"/bin/sh", "-c", strings.Join(scripts, " && ")},
