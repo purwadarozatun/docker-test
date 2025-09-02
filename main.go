@@ -146,8 +146,8 @@ func main() {
        }, &container.HostConfig{
 	       Mounts: volumeMounted,
 	       Resources: container.Resources{
-		       NanoCPUs: 2_000_000_000, // 2 CPU
-		       Memory:   3 * 1024 * 1024 * 1024, // 3GB
+		       NanoCPUs: 4_000_000_000, // 2 CPU
+		       Memory:   5 * 1024 * 1024 * 1024, // 3GB
 	       },
        }, &network.NetworkingConfig{}, nil, randomString(10))
 
